@@ -89,13 +89,11 @@ class AdminProductController extends AdminBase
             $options['count'] = $_POST['count'];
 
             // Сохраняем изменения
-            if (Product::updateProductById($id, $options)) {
-                // Если запись сохранена
-                // Проверим, загружалось ли через форму изображение
-                if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
-                    // Если загружалось, переместим его в нужную папке, дадим новое имя
-                   move_uploaded_file($_FILES["image"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . "/upload/images/products/{$id}.jpg");
-                }
+            Product::updateProductById($id, $options);
+            // Проверим, загружалось ли через форму изображение
+            if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
+                // Если загружалось, переместим его в нужную папке, дадим новое имя
+                move_uploaded_file($_FILES["image"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . "/upload/images/products/{$id}.jpg");
             }
             // Перенаправляем пользователя на страницу управлениями товарами
             header("Location: /admin/product");
@@ -113,6 +111,9 @@ class AdminProductController extends AdminBase
 			// Если форма отправлена
 			// Удаляем товар
 			Product::deleteProductById($id);
+            if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/upload/images/products/{$id}.jpg")) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . "/upload/images/products/{$id}.jpg");
+            }
 			// Перенаправляем пользователя на страницу удаления товарами
 			header("Location: /admin/product");
 		}

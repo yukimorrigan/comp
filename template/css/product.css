@@ -1,0 +1,115 @@
+.product-content-container {
+	padding: 20px;
+}
+
+.product-img-container {
+	max-width: 400px;
+	max-height: 400px;
+	background-color: #d0d7da;
+    border: 1px solid #b4b4b4;
+    padding: 10px 0px 10px 0px;
+}
+
+.product-img-container img {
+	max-width: 100%;
+	height: auto;
+}
+
+.product-fiol {
+    margin: 0px;
+    color: #670057;
+    font-weight: 600;
+}
+
+.blue {
+	margin: 0;
+	font-size: 20px;
+	color: #0000ff;
+    font-weight: 600;
+}
+
+.characteristics {
+	padding: 0px 5px 0px 5px;
+}
+
+.characteristics td {
+	color: #00012a;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+.product-cod {
+	color: #666666;
+	margin-bottom: 5px;
+}
+
+.count-row {
+	display: inline;
+}
+
+.count-row p, .count-row h3, .count-row input {
+	display: inline-block;
+	margin: 0px 15px 5px 15px;
+}
+
+.count-row .col, .count-row .col-4 {
+	margin-bottom: 25px;
+}
+
+.product-price {
+	font-size: 24px;
+}
+
+.product-grn {
+	width: 22px;
+	height: 22px;
+}
+
+.input-box {
+	max-width: 50px;
+}
+
+.product-tobasket {
+    padding: 10px 10px 12px 10px;
+    max-width: 130px;
+    cursor: pointer;
+    background: #00c2f2;
+    border: none;
+    border-radius: 10px;
+    outline: 0;
+    box-shadow: inset rgba(200,200,200,0.2) 4px  4px 18px 5px, inset rgba(0,0,0,0.3) -8px -8px 18px 5px;
+    white-space: nowrap;
+    margin: 10px 0px 0px 0px;
+}
+
+.product-tobasket p {
+    display: inline-block;
+    color: white;
+    margin: 0px;
+}
+
+.product-tobasket img {
+    display: inline-block;
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.product-tobasket:hover {    
+    background: #2b28b1;
+}  
+    
+.product-tobasket:active,
+.product-tobasket:focus {  
+    background: #0400c1;
+    outline: 0;  
+}
+
+.description {
+	color: #00012a;
+	padding: 10px 15px 0px 15px;
+	text-align: justify;
+}
+
+.product-sale {
+	top: 18%;
+}

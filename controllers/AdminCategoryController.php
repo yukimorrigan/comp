@@ -32,8 +32,8 @@ class AdminCategoryController extends AdminBase
             if (!isset($name) || empty($name)) {
                 $errors[] = 'Заполните поля';
             }
+            // Если ошибок нет
             if ($errors == false) {
-                // Если ошибок нет
                 // Добавляем новую категорию
                 $id = Category::createCategory($name, $sortOrder, $status);
                 // Если запись добавлена
@@ -95,6 +95,9 @@ class AdminCategoryController extends AdminBase
             // Если форма отправлена
             // Удаляем категорию
             Category::deleteCategoryById($id);
+            if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/upload/images/categories/{$id}.png")) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . "/upload/images/categories/{$id}.png");
+            }
             // Перенаправляем пользователя на страницу управлениями товарами
             header("Location: /admin/category");
         }

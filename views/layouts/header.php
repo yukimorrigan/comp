@@ -71,11 +71,7 @@
 						<?php foreach ($categories as $categoryItem): ?>
 							<li class="nav-item <?php if ($categoryId == $categoryItem['id']) echo 'active' ?>">
 								<a href="/category/<?php echo $categoryItem['id'];?>" class="nav-link">
-									<?php if ($categoryItem['image'] != null): ?>
-										<img src="/upload/images/categories/<?php echo $categoryItem['image'];?>">
-									<?php else: ?>
-										<img src="/upload/images/categories/empty.png">
-									<?php endif; ?>
+									<img src="<?php echo Category::getImage($categoryItem['id']); ?>">
 									<p><?php echo $categoryItem['name'];?></p>
 								</a>
 							</li>

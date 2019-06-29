@@ -4,41 +4,15 @@ class Category
 {
 	public static function getCategoriesList()
 	{
-		$db = Db::getConnection();
-
-		$categoryList = array();
-
-		$result = $db->query('SELECT id, name, image FROM category '
-		. 'ORDER BY sort_order ASC');
-
-		$i = 0;
-		while ($row = $result->fetch()) {
-			$categoryList[$i]['id'] = $row['id'];
-			$categoryList[$i]['name'] = $row['name'];
-			$categoryList[$i]['image'] = $row['image'];
-			$i++;
-		}
-
-		return $categoryList;
+		return R::getAll('SELECT `id`, `name` FROM `category`'
+            . ' WHERE `status` = 1 '
+            . ' ORDER BY `sort_order` ASC');
 	}
 
 	public static function getCategoriesListAdmin()
 	{
-		// Соединение с БД
-        $db = Db::getConnection();
-         // Запрос к БД
-        $result = $db->query('SELECT id, name, sort_order, status FROM category ORDER BY sort_order ASC');
-        // Получение и возврат результатов
-        $categoryList = array();
-        $i = 0;
-        while ($row = $result->fetch()) {
-        	$categoryList[$i]['id'] = $row['id'];
-        	$categoryList[$i]['name'] = $row['name'];
-            $categoryList[$i]['sort_order'] = $row['sort_order'];
-            $categoryList[$i]['status'] = $row['status'];
-            $i++;
-        }
-        return $categoryList;
+        return R::getAll('SELECT `id`, `name`, `sort_order`, `status` FROM `category`'
+            . ' ORDER BY `sort_order` ASC');
 	}
 
 	/**
@@ -50,22 +24,15 @@ class Category
      */
     public static function createCategory($name, $sortOrder, $status)
     {
-        // Соединение с БД
-        $db = Db::getConnection();
-        // Текст запроса к БД
-        $sql = 'INSERT INTO category (name, sort_order, status) '
-                . 'VALUES (:name, :sort_order, :status)';
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':sort_order', $sortOrder, PDO::PARAM_INT);
-        $result->bindParam(':status', $status, PDO::PARAM_INT);
-        if ($result->execute()) {
-            // Если запрос выполенен успешно, возвращаем id добавленной записи
-            return $db->lastInsertId();
-        }
-        // Иначе возвращаем 0
-        return 0;
+        $category = R::dispense('category');
+
+        $category->name = $name;
+        $category->sort_order = (int) $sortOrder;
+        $category->status = $status;
+
+        R::store($category);
+
+        return R::getInsertId();
     }
     /**
      * Удаляет категорию с заданным id
@@ -74,14 +41,8 @@ class Category
      */
     public static function deleteCategoryById($id)
     {
-        // Соединение с БД
-        $db = Db::getConnection();
-        // Текст запроса к БД
-        $sql = 'DELETE FROM category WHERE id = :id';
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        return $result->execute();
+        $category = R::load('category', $id);
+        R::trash($category);
     }
     /**
      * Редактирование категории с заданным id
@@ -167,7 +128,7 @@ class Category
         // Путь к изображению товара
         $pathToCategoryImage = $path . $id . '.png';
 
-        if (file_exists($_SERVER['DOCUMENT_ROOT'].$pathToCategoryImage)) {
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . $pathToCategoryImage)) {
             // Если изображение для товара существует
             // Возвращаем путь изображения товара
             return $pathToCategoryImage;

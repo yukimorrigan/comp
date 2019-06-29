@@ -68,13 +68,11 @@ class AdminCategoryController extends AdminBase
             $sortOrder = $_POST['sort_order'];
             $status = $_POST['status'];
             // Сохраняем изменения
-            if (Category::updateCategoryById($id, $name, $sortOrder, $status)) {
-                // Если запись сохранена
-                // Проверим, загружалось ли через форму изображение
-                if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
-                    // Если загружалось, переместим его в нужную папке, дадим новое имя
-                   move_uploaded_file($_FILES["image"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . "/upload/images/categories/{$id}.png");
-                }
+            Category::updateCategoryById($id, $name, $sortOrder, $status);
+            // Проверим, загружалось ли через форму изображение
+            if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
+                // Если загружалось, переместим его в нужную папке, дадим новое имя
+                move_uploaded_file($_FILES["image"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . "/upload/images/categories/{$id}.png");
             }
             // Перенаправляем пользователя на страницу управлениями категориями
             header("Location: /admin/category");

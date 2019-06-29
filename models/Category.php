@@ -28,7 +28,7 @@ class Category
 
         $category->name = $name;
         $category->sort_order = (int) $sortOrder;
-        $category->status = $status;
+        $category->status = (int) $status;
 
         R::store($category);
 
@@ -44,6 +44,7 @@ class Category
         $category = R::load('category', $id);
         R::trash($category);
     }
+
     /**
      * Редактирование категории с заданным id
      * @param integer $id <p>id категории</p>
@@ -54,23 +55,15 @@ class Category
      */
     public static function updateCategoryById($id, $name, $sortOrder, $status)
     {
-        // Соединение с БД
-        $db = Db::getConnection();
-        // Текст запроса к БД
-        $sql = "UPDATE category
-            SET 
-                name = :name, 
-                sort_order = :sort_order, 
-                status = :status
-            WHERE id = :id";
-        // Получение и возврат результатов. Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':sort_order', $sortOrder, PDO::PARAM_INT);
-        $result->bindParam(':status', $status, PDO::PARAM_INT);
-        return $result->execute();
+        $category = R::load('category', $id);
+
+        $category->name = $name;
+        $category->sort_order = (int) $sortOrder;
+        $category->status = (int) $status;
+
+        R::store($category);
     }
+
     /**
      * Возвращает категорию с указанным id
      * @param integer $id <p>id категории</p>
@@ -78,34 +71,7 @@ class Category
      */
     public static function getCategoryById($id)
     {
-        // Соединение с БД
-        $db = Db::getConnection();
-        // Текст запроса к БД
-        $sql = 'SELECT * FROM category WHERE id = :id';
-        // Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        // Указываем, что хотим получить данные в виде массива
-        $result->setFetchMode(PDO::FETCH_ASSOC);
-        // Выполняем запрос
-        $result->execute();
-        // Возвращаем данные
-        return $result->fetch();
-    }
-
-    public static function getCategoryNameById($id)
-    {
-        // Соединение с БД
-        $db = Db::getConnection();
-        // Текст запроса к БД
-        $sql = 'SELECT name FROM category WHERE id = :id';
-        // Используется подготовленный запрос
-        $result = $db->prepare($sql);
-        $result->bindParam(':id', $id, PDO::PARAM_INT);
-        // Выполняем запрос
-        $result->execute();
-        // Возвращаем данные
-        return $result->fetch();
+        return R::load('category', $id);
     }
 
 	public static function getStatusText($status)

@@ -39,18 +39,6 @@ return array (
     'admin/order/delete/([0-9]+)' => 'adminOrder/delete/$1',
     'admin/order/view/([0-9]+)' => 'adminOrder/view/$1',
     'admin/order' => 'adminOrder/index',
-    // Управление свойствами аттрибутов
-    'admin/filter/attribute-value/create' => 'adminAttributeValue/create',
-    'admin/filter/attribute-value/update/([0-9]+)' => 'adminAttributeValue/update/$1',
-    'admin/filter/attribute-value/delete/([0-9]+)' => 'adminAttributeValue/delete/$1',
-    'admin/filter/attribute-value' => 'adminAttributeValue/index',
-    // Управление аттрибутами:
-    'admin/filter/attribute/create' => 'adminAttribute/create',
-    'admin/filter/attribute/update/([0-9]+)' => 'adminAttribute/update/$1',
-    'admin/filter/attribute/delete/([0-9]+)' => 'adminAttribute/delete/$1',
-    'admin/filter/attribute' => 'adminAttribute/index',
-    // Управление фильтрами
-    'admin/filter' => 'adminFilter/index',
 	// Админпанель:
     'admin' => 'admin/index',
 	// О магазине

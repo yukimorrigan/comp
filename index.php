@@ -17,7 +17,7 @@ require_once(ROOT.'/libs/rb.php');
 // установить соединение с базой данных
 R::setup('mysql:host=127.0.0.1;dbname=comp', 'root', '');
 // логика авто-создания полей и таблиц
-R::freeze(false);
+R::freeze(true);
 // проверка подключения
 if (!R::testConnection()) {
 	exit('Нет подключения к БД');

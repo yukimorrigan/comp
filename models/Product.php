@@ -20,25 +20,10 @@ class Product
 			$page = intval($page);
 			$offset = ($page - 1) * self::SHOW_BY_DEFAULT;
 
-			$db = Db::getConnection();
-			$products = array();
-			$result = $db->query("SELECT id, name, price, image, sale FROM product "
-			. "WHERE status = '1' AND category_id = '$categoryId' "
-			. "ORDER BY id DESC "
-			. "LIMIT " . self::SHOW_BY_DEFAULT
-			. " OFFSET " . $offset);
-
-			$i = 0;
-			while ($row = $result->fetch()) {
-				$products[$i]['id'] = $row['id'];
-				$products[$i]['name'] = $row['name'];
-				$products[$i]['price'] = $row['price'];
-				$products[$i]['image'] = $row['image'];
-				$products[$i]['sale'] = $row['sale'];
-				$i++;
-			}
-
-			return $products;
+            return R::getAll('SELECT `id`, `name`, `price`, `sale` FROM `product`'
+                . ' WHERE `status` = 1 AND category_id = ?'
+                . ' ORDER BY `id` DESC'
+                . ' LIMIT ? OFFSET ?', array($categoryId, self::SHOW_BY_DEFAULT, $offset));
 		}
 	}
 
@@ -47,12 +32,7 @@ class Product
 		$id = intval($id);
 
 		if ($id) {
-			$db = Db::getConnection();
-
-			$result = $db->query('SELECT * FROM product WHERE id=' . $id);
-			$result->setFetchMode(PDO::FETCH_ASSOC);
-
-			return $result->fetch();
+            return R::load('product', $id);
 		}
 	}
 
@@ -62,16 +42,11 @@ class Product
 
     public static function getTotalProductsInCategory($categoryId)
     {
-    	$db = Db::getConnection();
-
-    	$result = $db->query('SELECT count(id) AS count FROM product '
-    		. 'WHERE status="1" AND category_id="' . $categoryId . '"');
-    	$result->setFetchMode(PDO::FETCH_ASSOC);
-    	$row = $result->fetch();
-
-    	return $row['count'];
+        $category = R::load('category', $categoryId);
+        return $category->countOwn('product');
     }
 
+    //TODO: Сделать связь со списком заказов
     public static function getProductsByIds($idsArray) {
 
     	$products = array();
@@ -98,20 +73,8 @@ class Product
 
     public static function getProductsList()
     {
-        // Соединение с БД
-        $db = Db::getConnection();
-        // Получение и возврат результатов
-        $result = $db->query('SELECT id, name, price, code FROM product ORDER BY id ASC');
-        $productsList = array();
-        $i = 0;
-        while ($row = $result->fetch()) {
-            $productsList[$i]['id'] = $row['id'];
-            $productsList[$i]['name'] = $row['name'];
-            $productsList[$i]['code'] = $row['code'];
-            $productsList[$i]['price'] = $row['price'];
-            $i++;
-        }
-        return $productsList;
+        return R::getAll('SELECT `id`, `name`, `price`, `code` FROM `product`'
+            . ' ORDER BY `id` ASC');
     }
 
     public static function deleteProductById($id) {

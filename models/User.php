@@ -4,18 +4,16 @@ class User
 {
 	public static function register($name, $email, $password, $phone) {
 		
-		$db = Db::getConnection();
+		$user = R::dispense('user');
 
-		$sql = 'INSERT INTO user (name, email, password, phone) '
-			. 'VALUES (:name, :email, :password, :phone)';
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = $password;
+        $user->phone = $phone;
 
-		$result = $db->prepare($sql);
-		$result->bindParam(':name', $name, PDO::PARAM_STR);
-		$result->bindParam(':email', $email, PDO::PARAM_STR);
-		$result->bindParam(':password', $password, PDO::PARAM_STR);
-		$result->bindParam(':phone', $phone, PDO::PARAM_STR);
+        R::store($user);
 
-		return $result->execute();
+        return R::getInsertId();
 	}
 
 	public static function checkName($name) {
@@ -35,15 +33,8 @@ class User
 	}
 
 	public static function checkEmailExist($email) {
-		$db = Db::getConnection();
-
-		$sql = 'SELECT COUNT(*) FROM user WHERE email = :email';
-
-		$result = $db->prepare($sql);
-		$result->bindParam(':email', $email, PDO::PARAM_STR);
-		$result->execute();
-
-		if ($result->fetchColumn()) {
+		$user = R::findOne('user', '`email` = ?', array($email));
+		if ($user) {
 			return true;
 		}
 		return false;
@@ -75,17 +66,9 @@ class User
 	}
 
 	public static function checkUserData($email, $password) {
+		
+		$user = R::findOne('user', '(`email` = ? AND `password` = ?)', array($email, $password));
 
-		$db = Db::getConnection();
-
-		$sql = 'SELECT * FROM user WHERE email = :email AND password = :password';
-
-		$result = $db->prepare($sql);
-		$result->bindParam(':email', $email, PDO::PARAM_INT);
-		$result->bindParam(':password', $password, PDO::PARAM_INT);
-		$result->execute();
-
-		$user = $result->fetch();
 		if ($user) {
 			return $user['id'];
 		}
@@ -118,35 +101,21 @@ class User
 	public static function getUserById($id) {
 
 		if ($id) {
-
-			$db = Db::getConnection();
-			$sql = 'SELECT * FROM user WHERE id = :id';
-
-			$result = $db->prepare($sql);
-			$result->bindParam(':id', $id, PDO::PARAM_INT);
-
-			// Указываем, что хотим получить данные в виде массива
-			$result->setFetchMode(PDO::FETCH_ASSOC);
-			$result->execute();
-
-			return $result->fetch();
+			$id = intval($id);
+			$user = R::load('user', $id);
+			return $user;
 		}
 	}
 
 	public static function edit($id, $name, $password, $phone) {
 
-		$db = Db::getConnection();
+		$user = R::load('user', $id);
 
-		$sql = "UPDATE user 
-			SET name = :name, password = :password, phone = :phone 
-			WHERE id = :id";
+        $user->name = $name;
+        $user->password = $password;
+        $user->phone = $phone;
 
-		$result = $db->prepare($sql);
-		$result->bindParam(':id', $id, PDO::PARAM_INT);
-		$result->bindParam(':name', $name, PDO::PARAM_STR);
-		$result->bindParam(':password', $password, PDO::PARAM_STR);
-		$result->bindParam(':phone', $phone, PDO::PARAM_STR);
-		return $result->execute();
+        R::store($user);
 	}
 }
 

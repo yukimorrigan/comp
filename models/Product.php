@@ -21,7 +21,7 @@ class Product
 			$offset = ($page - 1) * self::SHOW_BY_DEFAULT;
 
             return R::getAll('SELECT `id`, `name`, `price`, `sale` FROM `product`'
-                . ' WHERE `status` = 1 AND category_id = ?'
+                . ' WHERE (`status` = 1 AND category_id = ?)'
                 . ' ORDER BY `id` DESC'
                 . ' LIMIT ? OFFSET ?', array($categoryId, self::SHOW_BY_DEFAULT, $offset));
 		}

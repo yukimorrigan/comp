@@ -62,6 +62,7 @@ class CartController
         // Количество товаров
         $totalQuantity = Cart::countItems();
         // Поля для формы
+        $userId = false;
         $userName = false;
         $userPhone = false;
         $userComment = false;
@@ -75,9 +76,6 @@ class CartController
             $user = User::getUserById($userId);
             $userName = $user['name'];
             $userPhone = $user['phone'];
-        } else {
-            // Если гость, поля формы останутся пустыми
-            $userId = false;
         }
         // Обработка формы
         if (isset($_POST['submit'])) {
@@ -98,7 +96,7 @@ class CartController
             if ($errors == false) {
                 // Если ошибок нет
                 // Сохраняем заказ в базе данных
-                $result = Order::save($userName, $userPhone, $userComment, $userId, $productsInCart);
+                $result = Order::create($userId, $userName, $userPhone, $userComment, $productsInCart);
                 if ($result) {
                     // Если заказ успешно сохранен
                     // Оповещаем администратора о новом заказе по почте                

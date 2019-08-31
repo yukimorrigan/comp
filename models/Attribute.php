@@ -65,6 +65,9 @@ class Attribute {
     			$attributevalues[$i]->name = $values[$i];
             }
             $attribute->ownAttributevalueList = $attributevalues;
+        } else {
+            $attribute->ownAttributevalueList = array();
+            R::store($attribute);
         }
 
         R::store($attribute);

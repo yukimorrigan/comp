@@ -64,9 +64,9 @@ class Attribute {
             	$attributevalues[$i] = R::dispense('attributevalue');
     			$attributevalues[$i]->name = $values[$i];
             }
-            $attribute->ownAttributevalueList = $attributevalues;
+            $attribute->xownAttributevalueList = $attributevalues;
         } else {
-            $attribute->ownAttributevalueList = array();
+            $attribute->xownAttributevalueList = array();
             R::store($attribute);
         }
 

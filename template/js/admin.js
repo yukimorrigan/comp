@@ -12,3 +12,26 @@ $(function() {
     	}  
     });
 });
+
+$(function() {
+	$('#add-attr').on('click', function(){
+		var count = $('[name^=value').length;
+		$('#attr').append(
+			'<div class="form-inline"> \
+				<div class="form-group mb-2 pr-3">  \
+					<input type="text" name="value[' + count + ']" placeholder="" value="" class="form-control mb-2"> \
+				</div> \
+				<div class="form-group mb-2 pr-3">  \
+					<button type="button" class="btn btn-link remove"><i class="fa fa-times"></i></button> \
+				</div> \
+			</div>'); 
+	});
+});
+
+$('html').on('click','.remove', function () {                              
+    $(this).parent().parent().remove();
+
+    $('#attr input').each(function(i, elem) {
+		elem.name = 'value[' + i + ']';
+	});
+});

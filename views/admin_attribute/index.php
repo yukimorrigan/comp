@@ -35,8 +35,25 @@
             <th>Статус</th>
             <th></th>
             <th></th>
-            <th></th>
         </tr>
+        <?php foreach ($attributesList as $attribute): ?>
+            <tr>
+                <td><?php echo $attribute['id']; ?></td>
+                <td><?php echo $attribute['name']; ?></td>
+                <td>
+                    <?php 
+                        $category = Category::getCategoryById($attribute['category_id']);
+                        echo $category['name'];
+                    ?>        
+                </td>
+                <td><?php echo $attribute->countOwn('attributevalue'); ?></td>  
+                <td>
+                    <?php echo ($attribute['status']) ? 'Отображается' : 'Скрыт';?>    
+                </td>  
+                <td><a href="/admin/attribute/update/<?php echo $attribute['id']; ?>" title="Редактировать"><i class="fa fa-pencil-square-o"></i></a></td>
+                <td><a href="/admin/attribute/delete/<?php echo $attribute['id']; ?>" title="Удалить"><i class="fa fa-times"></i></a></td>
+            </tr>
+        <?php endforeach; ?>
 
     </table>
 </div>

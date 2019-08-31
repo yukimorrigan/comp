@@ -41,6 +41,8 @@ return array (
     'admin/order' => 'adminOrder/index',
     // Управление аттрибутами: 
     'admin/attribute/create' => 'adminAttribute/create',
+    'admin/attribute/update/([0-9]+)' => 'adminAttribute/update/$1',
+    'admin/attribute/delete/([0-9]+)' => 'adminAttribute/delete/$1',
     'admin/attribute' => 'adminAttribute/index',
 	// Админпанель:
     'admin' => 'admin/index',

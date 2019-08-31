@@ -18,15 +18,18 @@ class Attribute {
 		R::store($category);
 
 		/* Один-ко-многим: аттрибуты содержат значения*/
-		// сохранить все значения аттрибутов
-		foreach ($values as $value) {
-			// создать бин значение
-			$attributevalue = R::dispense('attributevalue');
-			$attributevalue->name = $value;
-			// связать таблицы
-			$attribute->xownAttributevalueList[] = $attributevalue;
-		}
-		R::store($attribute);
+        // Если есть значения аттрибутов
+        if ($values) {
+            // сохранить все значения аттрибутов
+            foreach ($values as $value) {
+                // создать бин значение
+                $attributevalue = R::dispense('attributevalue');
+                $attributevalue->name = $value;
+                // связать таблицы
+                $attribute->xownAttributevalueList[] = $attributevalue;
+            }
+            R::store($attribute);
+        }
     }
 
     public static function getAttributesList()
@@ -53,13 +56,16 @@ class Attribute {
         $attribute->category_id = (int) $categoryId;
         $attribute->status = $status;
 
-        $attributevalues = array();
-        for ($i=0; $i < count($values); $i++) { 
-        	// создать бин значение
-        	$attributevalues[$i] = R::dispense('attributevalue');
-			$attributevalues[$i]->name = $values[$i];
+        // Если есть значения аттрибутов
+        if ($values) {
+            $attributevalues = array();
+            for ($i=0; $i < count($values); $i++) { 
+            	// создать бин значение
+            	$attributevalues[$i] = R::dispense('attributevalue');
+    			$attributevalues[$i]->name = $values[$i];
+            }
+            $attribute->ownAttributevalueList = $attributevalues;
         }
-        $attribute->ownAttributevalueList = $attributevalues;
 
         R::store($attribute);
     }

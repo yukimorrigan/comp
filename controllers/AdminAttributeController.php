@@ -25,7 +25,10 @@ class AdminAttributeController extends AdminBase {
             // Получаем данные из формы
             $name = $_POST['name'];
             $categoryId = $_POST['category_id'];
-            $values = $_POST['value'];
+            $values = false;
+            if(isset($_POST['value'])) {
+                $values = $_POST['value'];
+            }
 
             // Флаг ошибок в форме
             $errors = false;
@@ -58,7 +61,10 @@ class AdminAttributeController extends AdminBase {
             // Получаем данные из формы редактирования. При необходимости можно валидировать значения
             $name = $_POST['name'];
             $categoryId = $_POST['category_id'];
-            $values = $_POST['value'];
+            $values = false;
+            if(isset($_POST['value'])) {
+                $values = $_POST['value'];
+            }
             $status = $_POST['status'];
 
             // Сохраняем изменения

@@ -1,3 +1,5 @@
+/* Страница аттрибутов */
+// На странице добавления аттрибутов добавить значение аттрибута
 $(function() {
     $('#add-btn').bind('click', function(){
     	var newValue = $('#new-value').val();
@@ -13,6 +15,7 @@ $(function() {
     });
 });
 
+// На странице редактирования аттрибутов добавить значение аттрибута
 $(function() {
 	$('#add-attr').on('click', function(){
 		var count = $('[name^=value').length;
@@ -28,6 +31,7 @@ $(function() {
 	});
 });
 
+// На странице редактирования аттрибутов добавить значение аттрибута
 $('html').on('click','.remove', function () {                              
     $(this).parent().parent().remove();
 
